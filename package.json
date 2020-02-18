@@ -1,0 +1,34 @@
+{
+  "name": "accessibility_check_tools",
+  "version": "1.0.0",
+  "description": "Accessibility filescan service running on AWS Lambda serverless",
+  "main": "src/app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "webpack",
+    "deploy": "./deploy.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Swarthmore/accessibility_check_tools.git"
+  },
+  "author": "Clamp IT",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/Swarthmore/accessibility_check_tools/issues"
+  },
+  "homepage": "https://github.com/Swarthmore/accessibility_check_tools#readme",
+  "dependencies": {
+    "aws-sdk": "^2.620.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "uuidv4": "^6.0.2",
+    "yup": "^0.28.1"
+  },
+  "devDependencies": {
+    "pdfjs-dist": "^2.2.228",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11"
+  }
+}
