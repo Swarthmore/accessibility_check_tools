@@ -5,7 +5,7 @@ module.exports = {
   mode: "production",
 
   entry: {
-    main: "./src/app.js"
+    app: "./src/app.js"
   },
 
   plugins: [new CleanWebpackPlugin()],
