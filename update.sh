@@ -33,3 +33,6 @@ aws s3api put-object --bucket $s3_deploy_bucket --key moodle-accessibility-lambd
 
 # Tell AWS Lambda to update with code from the deploy S3 bucket
 aws lambda  update-function-code --function-name ${lambda_function_name} --s3-bucket $s3_deploy_bucket --s3-key moodle-accessibility-lambda
+
+# Update Terraform
+terraform apply
