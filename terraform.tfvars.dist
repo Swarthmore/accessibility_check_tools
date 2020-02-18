@@ -1,0 +1,40 @@
+# Variables for Terraform deployment
+# Make a copy and rename to "terraform.tfvars" and fill out with your settings
+
+
+###########################################################
+# Project settings
+
+# Deploy suffix - to allow for multiple versions to exist in the same
+# AWS account/region.  Can be an emtry string
+deploysuffix = ""
+
+# AWS profile to use (for credentials)
+aws_profile = "default"         # e.g. "default" or "prod"
+
+# AWS Region to use for deployment
+aws_region = "us-east-1"        # e.g. "us-east-1"
+
+# S3 Location of zipped Lambda function for deployment
+deploy_s3_bucket = ""
+deploy_s3_key    = ""
+
+
+###########################################################
+# Lambda settings
+
+# S3 Bucket to use for file uploads 
+UploadBucket = ""
+
+# Maximium filesize in MB to upload
+maxFileSizeUpload = 100
+
+# Lambda timeout (in seconds)
+lambdaTimeout = 30
+
+
+###########################################################
+# API Gateway Settings
+
+# Name of stage
+api_stage = "test"
