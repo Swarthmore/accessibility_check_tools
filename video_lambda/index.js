@@ -1,8 +1,6 @@
 'use strict';
 const AWS = require('aws-sdk');
-const s3 = new AWS.S3();
-const uuidv4 = require('uuid/v4')
-const pdfjsLib = require('pdfjs-dist');
+const getYouTubeID = require('get-youtube-id');
 AWS.config.update({ region: process.env.REGION || 'us-east-1' })
 
 
@@ -10,12 +8,13 @@ AWS.config.update({ region: process.env.REGION || 'us-east-1' })
 // AWS Lambda function connected to an API Gateway call
 // The body needs to contain the key (filename) of a PDF file in S3.
 
+
 exports.handler = async function(event, context) {
 
     console.log(event);
 
-    if (event.path == "/requesturl") {
-        return getUploadURL();
+    if (event.path == "/youtube") {
+        return checkYouTube()
     } else if (event.path == "/scan") {
         return new Promise(function(resolve, reject) {
             // Get S3 bucketname from environmental variable (set in CloudFormation template)
@@ -42,30 +41,66 @@ exports.handler = async function(event, context) {
 }
   
 
-const getUploadURL = function() {
+const checkYouTube = function(event) {
 
-    console.log("Getting upload url");
+    console.log("Checking YouTube video");
 
-    const actionId = uuidv4()
-    const s3Params = {
-        Bucket: process.env.bucketName,
-        Key:  `${actionId}`,
-        ACL: 'public-read',
-        Expires: 600
-    }
-    return new Promise((resolve, reject) => {
-        let uploadURL = s3.getSignedUrl('putObject', s3Params)
-        resolve({
-            "statusCode": 200,
-            "isBase64Encoded": false,
-            "headers": { "Access-Control-Allow-Origin": "*" },
-            "body": JSON.stringify({
-                "uploadURL": uploadURL,
-                "key": `${actionId}`
-            })
-        })
-    })
+    // Get YouTube API key from environmental variables
+    var youtube_apikey = process.env.youtube_apikey;
+
+    const promise = new Promise(function(resolve, reject) {
+
+        if (event.body == null && event.body == undefined) {
+            reject("Request body not provided");
+        } else { 
+            var body = JSON.parse(event.body);
+            if (body.url == null && body.url == undefined) {
+                throw ("YouTube url not provided");
+            } else {
+                youtube_url = body.url;
+                var youtube_video_id = getYouTubeID("youtube_url");
+                console.log("Received scan request for YouTube id: " + youtube_video_id);
+                url = "https://www.googleapis.com/youtube/v3/videos?id=:" + youtube_video_id + "&part=contentDetails&key=" + youtube_apikey
+                https.get(url, (res) => {
+                    resolve(res.statusCode)
+                    console.log(res.body);
+                  }).on('error', (e) => {
+                    reject(Error(e))
+                  })
+                })
+            }
+        } 
+
+
+
+    return promise
 }
+
+
+//$api_data is JSON data from https://www.googleapis.com/youtube/v3/videos?id={VIDEO_ID}&part=contentDetails&key={YOUTUBE_API_KEY}
+//$track_data is JSON data from https://www.googleapis.com/youtube/v3/captions?videoId={VIDEO_ID}&part=snippet&key={YOUTUBE_API_KEY}
+$caption = ($api_data['items'][0]['contentDetails']['caption'] === "true");
+// check to see if automatic speech recognition (ASR) caption track exists
+if (!$caption){
+	$caption_type = "none";
+	if (count($track_data['items'])){
+		foreach($track_data['items'] AS $item){
+			if ($item['snippet']['status'] == "serving"){
+				if ($item['snippet']['trackKind'] == "standard"){
+					$caption_type = "standard";
+					break; //we are good to go!
+				}
+				if ($item['snippet']['trackKind'] == "ASR"){
+					$caption_type = "ASR";
+				}
+			}
+		}
+	}
+} else { //there is a standard caption
+	$caption_type = "standard";
+}
+
+
 
 // Problem with a request, return the error
 const returnError = function(reason) {
