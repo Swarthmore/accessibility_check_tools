@@ -17,6 +17,10 @@ Accessibility filescan service running on AWS Lambda serverless
 * run ``sh update.sh`` - this will copy any Lambda function change to S3 and update Terraform.
 * URL and API key remain the same
 
+## Deleting
+* Remove any files (objects) from the S3 buckets for file upload and deploy
+* run `terraform destroy` from the root directory of this project.  
+
 # Test
 ## Node.js
 * Set environmental variables for base URL and API Key as per output of the `create.sh` script:  
