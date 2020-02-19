@@ -17,7 +17,7 @@ aws_region = "us-east-1"        # e.g. "us-east-1"
 
 # S3 Location of zipped Lambda function for deployment
 deploy_s3_bucket = ""
-deploy_s3_key    = ""
+deploy_s3_key = "accessibility-lambda-pdf-scan"
 
 
 ###########################################################
