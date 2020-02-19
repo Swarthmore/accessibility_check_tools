@@ -18,7 +18,8 @@ Accessibility filescan service running on AWS Lambda serverless
 * URL and API key remain the same
 
 ## Deleting
-* Remove any files (objects) from the S3 buckets for file upload and deploy
+* Remove any files (objects) from the S3 bucket for file upload
+* Manually remote objects from S3 deploy bucket and delete the bucket
 * run `terraform destroy` from the root directory of this project.  
 
 # Test
